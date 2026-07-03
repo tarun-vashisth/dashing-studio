@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const BACKEND_URL = "https://paradox-bloated-esteemed.ngrok-free.dev";
+ const BACKEND_URL = "https://tarunvashisth-dashing-studio.hf.space";
 
   // ── DOM ELEMENTS ──────────────────────────────────────────────
   const toast         = document.getElementById("toast");
