@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashing Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="#home">
+      <span class="brand-mark">D</span>
+      <span>Dashing Studio</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#models">Models</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#generate">Generate</a>
+      <a href="#assets">Assets</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="ghost-btn" data-open-signin>Sign in</button>
+      <button class="primary-btn" data-scroll="#generate">Get started</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <p class="eyebrow">AI image creation workspace</p>
+        <h1>The creative OS<br><span>for AI-native</span> studios.</h1>
+        <p class="hero-text">
+          Generate cinematic images, test model styles, save prompts, manage assets, and export concepts from one beautiful workspace.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-btn big" data-scroll="#generate">Start creating free</button>
+          <button class="text-btn" data-demo>Try demo account -></button>
+        </div>
+        <div class="hero-stats">
+          <div><strong>10+</strong><span>model styles</span></div>
+          <div><strong>4K</strong><span>export ready</span></div>
+          <div><strong>3</strong><span>workspace modes</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="models">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">/ Model Gallery</p>
+          <h2>Ten styles.<br>One prompt away.</h2>
+        </div>
+        <p class="section-copy">
+          Switch between photoreal, cinematic, anime, watercolor, 3D, fashion, architecture, and product models without rewriting a prompt.
+        </p>
+      </div>
+
+      <div class="model-grid">
+        <button class="model-card model-1 active" data-model="Photoreal">
+          <span>/ 01</span><strong>Photoreal</strong>
+        </button>
+        <button class="model-card model-2" data-model="Cinematic">
+          <span>/ 02</span><strong>Cinematic</strong>
+        </button>
+        <button class="model-card model-3" data-model="3D Render">
+          <span>/ 03</span><strong>3D Render</strong>
+        </button>
+        <button class="model-card model-4" data-model="Fashion">
+          <span>/ 04</span><strong>Fashion</strong>
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <p class="eyebrow">/ Built For Serious Creators</p>
+      <h2>A creative pipeline that <span>actually</span><br><span>keeps up</span> with you.</h2>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="icon">*</div>
+          <h3>Prompt Enhance</h3>
+          <p>Improve weak prompts into detailed studio-quality generation instructions.</p>
+        </article>
+        <article class="feature-card">
+          <div class="icon">=</div>
+          <h3>Batch Generation</h3>
+          <p>Create multiple variations and compare them before choosing the winner.</p>
+        </article>
+        <article class="feature-card">
+          <div class="icon">R</div>
+          <h3>Reference Image</h3>
+          <p>Use an uploaded image for composition, character, product, or style consistency.</p>
+        </article>
+        <article class="feature-card">
+          <div class="icon">AI</div>
+          <h3>Smart Templates</h3>
+          <p>Use AI-assisted prompt templates to spin up new visuals in seconds.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="generate">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">/ Generate</p>
+          <h2>Send prompts to your API endpoint</h2>
+        </div>
+        <p class="section-copy">Enter your model server endpoint and generate images directly from the workspace.</p>
+      </div>
+
+      <div class="generate-grid">
+        <div class="generate-panel">
+          <label for="endpointInput">API endpoint</label>
+          <input id="endpointInput" type="url" placeholder="https://paradox-bloated-esteemed.ngrok-free.dev" />
+
+          <label for="promptInput">Prompt</label>
+          <textarea id="promptInput" rows="4" placeholder="Enter image prompt..."></textarea>
+
+          <label for="negativeInput">Negative prompt</label>
+          <input id="negativeInput" type="text" placeholder="What to avoid..." />
+          
+          <div class="field-row">
+            <label for="modelSelect">Model style</label>
+            <select id="modelSelect">
+              <option>Photoreal</option>
+              <option>Cinematic</option>
+              <option>3D Render</option>
+              <option>Fashion</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="stepsRange">Steps <span id="stepsValue">30</span></label>
+            <input id="stepsRange" type="range" min="10" max="60" value="30" />
+          </div>
+
+          <div class="field-row">
+            <label for="qualitySelect">Quality</label>
+            <select id="qualitySelect">
+              <option>Standard</option>
+              <option>High</option>
+            </select>
+            <label for="formatSelect">Format</label>
+            <select id="formatSelect">
+              <option>PNG</option>
+              <option>JPG</option>
+            </select>
+          </div>
+
+          <button id="generateBtn" class="primary-btn">Generate</button>
+
+          <div class="button-row">
+            <button id="saveBtn" class="ghost-btn">Save endpoint</button>
+            <button id="copyApiBtn" class="ghost-btn">Copy API route</button>
+            <button id="exportBtn" class="ghost-btn">Export project</button>
+          </div>
+        </div>
+
+        <div class="preview-panel" id="previewCard">
+          <div class="preview-status" id="previewStatus">Generate an image to see preview.</div>
+          <div class="preview-meta">
+            <span id="previewModel">Photoreal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
