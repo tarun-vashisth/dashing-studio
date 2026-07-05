@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
- const BACKEND_URL = "https://tarunvashisth-dashing-studio.hf.space";
 
   // ── DOM ELEMENTS ──────────────────────────────────────────────
   const toast         = document.getElementById("toast");
   const signinModal   = document.getElementById("signinModal");
   const promptInput   = document.getElementById("promptInput");
   const negativeInput = document.getElementById("negativeInput");
-  const endpointInput = document.getElementById("endpointInput");
   const generateBtn   = document.getElementById("generateBtn");
   const enhanceBtn    = document.getElementById("enhanceBtn");
   const saveBtn       = document.getElementById("saveBtn");
@@ -16,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewModel  = document.getElementById("previewModel");
   const previewStatus = document.getElementById("previewStatus");
   const modelSelect   = document.getElementById("modelSelect");
-  const formatSelect  = document.getElementById("formatSelect");
   const exportBtn     = document.getElementById("exportBtn");
   const copyApiBtn    = document.getElementById("copyApiBtn");
   const creativityRange = document.getElementById("creativityRange");
@@ -25,10 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepsValue    = document.getElementById("stepsValue");
 
   // ── RESTORE SAVED VALUES ──────────────────────────────────────
-  const savedPrompt   = localStorage.getItem("dashingPrompt");
-  const savedEndpoint = localStorage.getItem("dashingEndpoint");
-  if (savedPrompt && promptInput)     promptInput.value   = savedPrompt;
-  if (savedEndpoint && endpointInput) endpointInput.value = savedEndpoint;
+  const savedPrompt = localStorage.getItem("dashingPrompt");
+  if (savedPrompt && promptInput) promptInput.value = savedPrompt;
 
   // ── TOAST ─────────────────────────────────────────────────────
   function showToast(message) {
@@ -113,21 +108,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── SAVE ENDPOINT ─────────────────────────────────────────────
+  // ── SAVE PROMPT ───────────────────────────────────────────────
   if (saveBtn) {
     saveBtn.addEventListener("click", () => {
-      if (promptInput)   localStorage.setItem("dashingPrompt",   promptInput.value);
-      if (endpointInput) localStorage.setItem("dashingEndpoint", endpointInput.value);
-      showToast("Endpoint and prompt saved!");
+      if (promptInput) localStorage.setItem("dashingPrompt", promptInput.value);
+      showToast("Prompt saved!");
     });
   }
 
   // ── COPY API ROUTE ────────────────────────────────────────────
   if (copyApiBtn) {
     copyApiBtn.addEventListener("click", () => {
-      const url = endpointInput ? endpointInput.value.trim() + "/generate" : "";
-      if (!url) { showToast("No endpoint set."); return; }
-      navigator.clipboard.writeText(url).then(() => showToast("API route copied!"));
+      navigator.clipboard.writeText("https://image.pollinations.ai/prompt/")
+        .then(() => showToast("API route copied!"));
     });
   }
 
@@ -139,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       promptInput.value = promptInput.value.trim() +
-        ", highly detailed, professional lighting, award winning, 8k resolution, masterpiece";
+        ", photorealistic, highly detailed, professional photography, 8k resolution, sharp focus";
       showToast("Prompt enhanced!");
     });
   }
@@ -147,82 +140,78 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── DEMO BUTTON ───────────────────────────────────────────────
   document.querySelectorAll("[data-demo]").forEach(btn => {
     btn.addEventListener("click", () => {
-      if (promptInput) promptInput.value = "a futuristic city at sunset, neon lights, cinematic";
+      if (promptInput) promptInput.value = "a futuristic city at sunset, neon lights, cinematic, photorealistic";
       showToast("Demo prompt loaded!");
       const gen = document.getElementById("generate");
       if (gen) gen.scrollIntoView({ behavior: "smooth" });
     });
   });
 
-  // ── IMAGE GENERATION ──────────────────────────────────────────
-  async function generateImage() {
-    const endpoint = BACKEND_URL;
-    const prompt   = promptInput   ? promptInput.value.trim()   : "";
+  // ── MODEL STYLE PREFIXES ──────────────────────────────────────
+  const MODEL_PREFIXES = {
+    "Photoreal":  "photorealistic, ultra detailed, DSLR photo, sharp focus,",
+    "Cinematic":  "cinematic film still, dramatic lighting, anamorphic lens, movie scene,",
+    "3D Render":  "3D render, octane render, studio lighting, high detail, blender,",
+    "Fashion":    "high fashion editorial, vogue magazine, professional photography, studio,",
+  };
 
-    if (!endpoint) {
-      showToast("Please enter your API endpoint URL first!");
-      return;
-    }
+  // ── IMAGE GENERATION USING POLLINATIONS AI ────────────────────
+  async function generateImage() {
+    const prompt = promptInput ? promptInput.value.trim() : "";
 
     if (!prompt) {
       showToast("Please enter a prompt!");
       return;
     }
 
-    // Build full API URL
-    const apiUrl = endpoint.replace(/\/$/, "") + "/generate";
+    // Get selected model style
+    const selectedModel = modelSelect ? modelSelect.value : "Photoreal";
+    const prefix = MODEL_PREFIXES[selectedModel] || "";
+    const fullPrompt = `${prefix} ${prompt}`.trim();
 
+    // Build Pollinations URL
+    const encodedPrompt = encodeURIComponent(fullPrompt);
+    const seed = Math.floor(Math.random() * 1000000);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&seed=${seed}&nologo=true&model=turbo`;
     // Show loading state
     if (generateBtn)  { generateBtn.disabled = true; generateBtn.textContent = "Generating..."; }
     if (previewStatus) previewStatus.textContent = "Generating...";
-    if (previewCard)   previewCard.innerHTML = `<div style="text-align:center;color:#94a3b8;font-size:14px;">⏳ Generating your image...<br><small>This may take 10–30 seconds</small></div>`;
+    if (previewCard) {
+      previewCard.innerHTML = `
+        <div style="text-align:center;color:#94a3b8;font-size:14px;padding:40px 20px;">
+          ⏳ Generating your image...<br>
+          <small style="color:#cbd5e1;">Usually takes 5-15 seconds</small>
+        </div>`;
+    }
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true"   // fixes ngrok CORS warning
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          negativePrompt: negativeInput ? negativeInput.value.trim() : "",
-          steps: stepsRange ? parseInt(stepsRange.value) : 20,
-          guidanceScale: creativityRange ? parseFloat(creativityRange.value) : 7.5,
-          num_images: 1
-        })
-      });
+      // Pollinations returns a direct image URL — just load it as an img tag
+      const img = new Image();
 
-      if (!response.ok) throw new Error(`Server returned ${response.status}`);
+      img.onload = () => {
+        if (previewCard) {
+          previewCard.innerHTML = `
+            <div style="width:100%;text-align:center;">
+              <img src="${imageUrl}"
+                   style="max-width:100%;border-radius:10px;display:block;margin:0 auto;" />
+              <button onclick="downloadImage('${imageUrl}')"
+                      style="margin-top:12px;padding:8px 20px;background:#2563eb;color:white;
+                             border:none;border-radius:8px;cursor:pointer;font-weight:600;">
+                ⬇ Download
+              </button>
+            </div>`;
+        }
+        if (previewStatus) previewStatus.textContent = "Ready";
+        if (previewModel)  previewModel.textContent  = selectedModel;
+        if (generateBtn)   { generateBtn.disabled = false; generateBtn.textContent = "Generate"; }
+        showToast("Image generated! 🎉");
+      };
 
-      const data = await response.json();
+      img.onerror = () => {
+        throw new Error("Image failed to load from Pollinations");
+      };
 
-      // Handle both response formats
-      let base64Image = null;
-      if (data.image && data.image.base64) {
-        base64Image = data.image.base64;          // colab_model_server.py format
-      } else if (data.images && data.images[0]) {
-        base64Image = data.images[0];             // older format
-      }
-
-      if (!base64Image) throw new Error("No image in response");
-
-      // Show image
-      if (previewCard) {
-        previewCard.innerHTML = `
-          <div style="width:100%;text-align:center;">
-            <img src="data:image/png;base64,${base64Image}"
-                 style="max-width:100%;border-radius:10px;display:block;margin:0 auto;" />
-            <button onclick="downloadImage('${base64Image}')"
-                    style="margin-top:12px;padding:8px 20px;background:#2563eb;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">
-              ⬇ Download
-            </button>
-          </div>`;
-      }
-
-      if (previewStatus) previewStatus.textContent = "Ready";
-      if (previewModel)  previewModel.textContent  = modelSelect ? modelSelect.value : "AI";
-      showToast("Image generated successfully! 🎉");
+      img.src = imageUrl;
 
     } catch (err) {
       console.error("Generation error:", err);
@@ -230,30 +219,32 @@ document.addEventListener("DOMContentLoaded", () => {
         previewCard.innerHTML = `
           <div style="text-align:center;color:#ef4444;font-size:14px;padding:20px;">
             ⚠️ Generation failed<br>
-            <small style="color:#94a3b8;">${err.message}</small><br><br>
-            <small style="color:#94a3b8;">Make sure your Colab server is running and the endpoint URL is correct.</small>
+            <small style="color:#94a3b8;">${err.message}</small>
           </div>`;
       }
       if (previewStatus) previewStatus.textContent = "Failed";
-      showToast("Generation failed — check console for details.");
-    } finally {
-      if (generateBtn) { generateBtn.disabled = false; generateBtn.textContent = "Generate"; }
+      if (generateBtn)   { generateBtn.disabled = false; generateBtn.textContent = "Generate"; }
+      showToast("Generation failed — try again.");
     }
   }
 
   // Download helper
-  window.downloadImage = function(base64) {
-    const link = document.createElement("a");
-    link.href  = `data:image/png;base64,${base64}`;
-    link.download = `dashing-studio-${Date.now()}.png`;
-    link.click();
-    showToast("Image downloaded!");
+  window.downloadImage = function(url) {
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `dashing-studio-${Date.now()}.png`;
+        link.click();
+        showToast("Image downloaded!");
+      });
   };
 
   // Generate button click
   if (generateBtn) generateBtn.addEventListener("click", generateImage);
 
-  // Enter key in prompt box
+  // Ctrl+Enter in prompt box
   if (promptInput) {
     promptInput.addEventListener("keydown", e => {
       if (e.key === "Enter" && e.ctrlKey) generateImage();
