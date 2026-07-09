@@ -148,12 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ── MODEL STYLE PREFIXES ──────────────────────────────────────
-  const MODEL_PREFIXES = {
-    "Photoreal":  "photorealistic, ultra detailed, DSLR photo, sharp focus,",
-    "Cinematic":  "cinematic film still, dramatic lighting, anamorphic lens, movie scene,",
-    "3D Render":  "3D render, octane render, studio lighting, high detail, blender,",
-    "Fashion":    "high fashion editorial, vogue magazine, professional photography, studio,",
-  };
+const MODEL_PREFIXES = {
+  "Photoreal":  "photorealistic, hyperrealistic, DSLR photo, 8k resolution, sharp focus, professional photography, masterpiece, best quality,",
+  "Cinematic":  "cinematic film still, dramatic lighting, anamorphic lens, movie scene, professional colorgrading, sharp, 8k,",
+  "3D Render":  "3D render, octane render, studio lighting, high detail, blender, 8k, photorealistic, masterpiece,",
+  "Fashion":    "high fashion editorial, vogue magazine, professional photography, studio lighting, sharp focus, 8k, masterpiece,",
+};
 
   // ── IMAGE GENERATION USING POLLINATIONS AI ────────────────────
   async function generateImage() {
