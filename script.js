@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Build Pollinations URL
     const encodedPrompt = encodeURIComponent(fullPrompt);
     const seed = Math.floor(Math.random() * 1000000);
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&seed=${seed}&nologo=true&model=turbo`;
+   const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${seed}&nologo=true&model=flux-realism&enhance=true`;
     // Show loading state
     if (generateBtn)  { generateBtn.disabled = true; generateBtn.textContent = "Generating..."; }
     if (previewStatus) previewStatus.textContent = "Generating...";
