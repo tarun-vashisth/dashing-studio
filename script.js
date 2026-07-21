@@ -191,13 +191,14 @@ const MODEL_PREFIXES = {
       img.onload = () => {
         if (previewCard) {
           previewCard.innerHTML = `
-            <div style="width:100%;text-align:center;">
+            <div style="width:100%;text-align:center;padding:12px;">
               <img src="${imageUrl}"
-                   style="max-width:100%;border-radius:10px;display:block;margin:0 auto;" />
+                   style="max-width:100%;border-radius:10px;display:block;margin:0 auto;max-height:380px;object-fit:contain;" />
               <button onclick="downloadImage('${imageUrl}')"
-                      style="margin-top:12px;padding:8px 20px;background:#2563eb;color:white;
-                             border:none;border-radius:8px;cursor:pointer;font-weight:600;">
-                ⬇ Download
+                      style="margin-top:16px;padding:10px 24px;background:#2563eb;color:white;
+                             border:none;border-radius:8px;cursor:pointer;font-weight:600;
+                             font-size:14px;display:inline-block;width:auto;">
+                ⬇ Download Image
               </button>
             </div>`;
         }
