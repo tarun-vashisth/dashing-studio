@@ -275,10 +275,10 @@ button { cursor: pointer; border: none; border-radius: var(--radius); font-size:
   font-weight: 700;
 }
 
-.model-1 { background-image: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
-.model-2 { background-image: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
-.model-3 { background-image: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%); }
-.model-4 { background-image: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
+.model-1 { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'); background-size: cover; background-position: center; }
+.model-2 { background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600&q=80'); background-size: cover; background-position: center; }
+.model-3 { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'); background-size: cover; background-position: center; }
+.model-4 { background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80'); background-size: cover; background-position: center; }
 .model-card.active { background-image: none; }
 
 /* ── FEATURES ── */
