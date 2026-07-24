@@ -275,9 +275,9 @@ button { cursor: pointer; border: none; border-radius: var(--radius); font-size:
   font-weight: 700;
 }
 
-.model-1 { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'); background-size: cover; background-position: center; }
+.model-1 { background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80'); background-size: cover; background-position: center; }
 .model-2 { background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600&q=80'); background-size: cover; background-position: center; }
-.model-3 { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'); background-size: cover; background-position: center; }
+.model-3 { background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80'); background-size: cover; background-position: center; }
 .model-4 { background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80'); background-size: cover; background-position: center; }
 .model-card.active { background-image: none; }
 
